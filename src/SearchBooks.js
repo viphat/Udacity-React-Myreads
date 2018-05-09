@@ -24,7 +24,6 @@ class SearchBooks extends Component {
 
   render() {
     const { query } = this.state;
-    this.books = [ ];
 
     return (
       <div className="search-books">
