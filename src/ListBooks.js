@@ -39,7 +39,6 @@ class ListBooks extends Component {
       this.state.books.filter((b) => {
         return b.shelf === shelf;
       });
-    console.log(filteredBooks);
     return filteredBooks;
   }
 
