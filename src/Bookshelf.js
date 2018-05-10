@@ -5,33 +5,36 @@ import PropTypes from 'prop-types';
 class Bookshelf extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
-    shelf: PropTypes.string.isRequired
+    shelf: PropTypes.string.isRequired,
+    onUpdate: PropTypes.func.isRequired
   }
 
-  componentDidMount() {
+  getTitle() {
     switch (this.props.shelf) {
       case 'currentlyReading':
-        this.title = 'Currently Reading';
-        break;
+        return 'Currently Reading';
       case 'wantToRead':
-        this.title = 'Want To Read';
-        break;
+        return 'Want To Read';
       default:
-        this.title = 'Read';
-    };
+        return 'Read';
+    }
   }
 
   render() {
     return (
       <div className="bookshelf">
         { this.props.shelf !== 'none' && (
-          <h2 className="bookshelf-title">{ this.title }</h2>
+          <h2 className="bookshelf-title">{ this.getTitle() }</h2>
         ) }
         <div className="bookshelf-books">
           <ol className="books-grid">
             {
               this.props.books.map((book) => (
-                <Book key={ book.id } book={ book }/>
+                <Book
+                  key={ book.id }
+                  book={ book }
+                  onUpdate={this.props.onUpdate}
+                />
               ))
             }
           </ol>

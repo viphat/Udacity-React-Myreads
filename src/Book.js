@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class Book extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
+    onUpdate: PropTypes.func.isRequired
   }
 
   authorsName() {
@@ -28,7 +29,10 @@ class Book extends Component {
             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("' + thumbnail +
             ' ")' }}></div>
             <div className="book-shelf-changer">
-              <BookshelfChanger book={this.props.book}/>
+              <BookshelfChanger
+                book={this.props.book}
+                onUpdate={this.props.onUpdate}
+              />
             </div>
           </div>
           <div className="book-title">{ this.props.book.title }</div>

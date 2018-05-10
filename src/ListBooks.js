@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import Bookshelf from './Bookshelf'
+import LoadingSpinner from './LoadingSpinner'
 
 class ListBooks extends Component {
   state = {
     books: [],
     currentlyReadingBooks: [],
     wantToReadBooks: [],
-    readBooks: []
+    readBooks: [],
+    loading: true
   }
 
   getBooks() {
@@ -31,6 +33,8 @@ class ListBooks extends Component {
         readBooks:
           this.filterBooks('read')
       }));
+
+      this.setState(() => ({ loading: false }));
     })
   }
 
@@ -42,7 +46,19 @@ class ListBooks extends Component {
     return filteredBooks;
   }
 
+  updateBook(book, shelf) {
+    BooksAPI.update(book, shelf).then((res) => {
+      this.getBooks();
+    });
+  }
+
+  constructor() {
+    super();
+    this.updateBook = this.updateBook.bind(this);
+  }
+
   componentDidMount() {
+    this.setState(() => ({ loading: true }));
     this.getBooks();
   }
 
@@ -53,20 +69,25 @@ class ListBooks extends Component {
           <h1>Eddie Bookshelf</h1>
         </div>
         <div className="list-books-content">
-          <div>
-            <Bookshelf
-              shelf='currentlyReading'
-              books={ this.state.currentlyReadingBooks }
-            />
-            <Bookshelf
-              shelf='wantToRead'
-              books={ this.state.wantToReadBooks }
-            />
-            <Bookshelf
-              shelf='read'
-              books={ this.state.readBooks }
-            />
-          </div>
+          { this.state.loading === true ? <LoadingSpinner /> : (
+            <div>
+              <Bookshelf
+                shelf='currentlyReading'
+                books={ this.state.currentlyReadingBooks }
+                onUpdate={ this.updateBook }
+              />
+              <Bookshelf
+                shelf='wantToRead'
+                books={ this.state.wantToReadBooks }
+                onUpdate={ this.updateBook }
+              />
+              <Bookshelf
+                shelf='read'
+                books={ this.state.readBooks }
+                onUpdate={ this.updateBook }
+              />
+            </div>
+          )}
         </div>
         <div className="open-search">
           <Link to='/search'>Add a book</Link>

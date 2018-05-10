@@ -172,3 +172,19 @@ body, .app {
   text-align: center;
   font-size: 0.8em;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.text-color-blue {
+  color: #336699;
+}
