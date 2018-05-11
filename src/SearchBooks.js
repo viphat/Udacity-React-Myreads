@@ -4,20 +4,39 @@ import * as BooksAPI from './BooksAPI'
 import {DebounceInput} from 'react-debounce-input'
 import Book from './Book'
 import _ from 'lodash'
+import LoadingSpinner from './LoadingSpinner'
 
 class SearchBooks extends Component {
   state = {
     query: '',
-    books: []
+    books: [],
+    loading: false
   }
 
   updateQuery = (query) => {
+    query = query.trim();
+
+    if (query === '') {
+      this.setState(() => ({
+        query: '',
+        books: [],
+        loading: false
+      }));
+      return;
+    }
+
     this.setState(() => ({
-      query: query.trim()
+      query: query,
+      books: [],
+      loading: true
     }));
 
     BooksAPI.search(query).then((res) => {
       if (res === undefined || res === null || (res && res.error)) {
+        this.setState(() => ({
+          books: [],
+          loading: false
+        }));
         return;
       }
 
@@ -26,7 +45,8 @@ class SearchBooks extends Component {
           books: res.map((book) => {
             let b = _.find(myBooks, (b) => { return b.id === book.id });
             return b === undefined ? book : b;
-          })
+          }),
+          loading: false
         }));
       })
     });
@@ -50,7 +70,8 @@ class SearchBooks extends Component {
   }
 
   render() {
-    const { query } = this.state;
+    const { query, books, loading } = this.state;
+    const resultIsEmpty = loading === false && query.length > 0 && books.length === 0;
 
     return (
       <div className="search-books">
@@ -59,7 +80,7 @@ class SearchBooks extends Component {
           <div className="search-books-input-wrapper">
             <DebounceInput type="text"
               minLength={2}
-              debounceTimeout={100}
+              debounceTimeout={500}
               placeholder="Search by title or author"
               value={query}
               onChange={(event) => this.updateQuery(event.target.value)}
@@ -67,17 +88,27 @@ class SearchBooks extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {
-              this.state.books.map((book) => (
-                <Book
-                  key={ book.id }
-                  book={ book }
-                  onUpdate={this.onUpdate}
-                />
-              ))
-            }
-          </ol>
+          { loading === true && (
+            <LoadingSpinner />
+          )}
+
+          {  resultIsEmpty ? (
+            <div className='full-width align-center'>
+              We didn't find any books that meets your search term.
+            </div>
+          ) : (
+            <ol className="books-grid">
+              {
+                books.map((book) => (
+                  <Book
+                    key={ book.id }
+                    book={ book }
+                    onUpdate={this.onUpdate}
+                  />
+                ))
+              }
+            </ol>
+          ) }
         </div>
       </div>
     )

@@ -6,7 +6,6 @@ import LoadingSpinner from './LoadingSpinner'
 
 class ListBooks extends Component {
   state = {
-    books: [],
     currentlyReadingBooks: [],
     wantToReadBooks: [],
     readBooks: [],
@@ -16,31 +15,17 @@ class ListBooks extends Component {
   getBooks() {
     BooksAPI.getAll().then((books) => {
       this.setState(() => ({
-        books
+        currentlyReadingBooks: this.filterBooks(books, 'currentlyReading'),
+        wantToReadBooks: this.filterBooks(books, 'wantToRead'),
+        readBooks: this.filterBooks(books, 'read'),
+        loading: false
       }));
-
-      this.setState(() => ({
-        currentlyReadingBooks:
-          this.filterBooks('currentlyReading')
-      }));
-
-      this.setState(() => ({
-        wantToReadBooks:
-          this.filterBooks('wantToRead')
-      }));
-
-      this.setState(() => ({
-        readBooks:
-          this.filterBooks('read')
-      }));
-
-      this.setState(() => ({ loading: false }));
     })
   }
 
-  filterBooks(shelf) {
+  filterBooks(books, shelf) {
     let filteredBooks =
-      this.state.books.filter((b) => {
+      books.filter((b) => {
         return b.shelf === shelf;
       });
     return filteredBooks;

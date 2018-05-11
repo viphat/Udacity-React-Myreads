@@ -22,12 +22,17 @@ class Book extends Component {
         this.props.book.imageLinks.thumbnail :
         'http://place-hold.it/128x193';
 
+    let bookCoverStyle = {
+      width: 128,
+      height: 193,
+      backgroundImage: `url("${thumbnail}")`
+    }
+
     return (
       <li>
         <div className="book">
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url("' + thumbnail +
-            ' ")' }}></div>
+            <div className="book-cover" style={ bookCoverStyle }></div>
             <div className="book-shelf-changer">
               <BookshelfChanger
                 book={this.props.book}
