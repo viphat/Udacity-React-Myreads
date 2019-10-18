@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import Book from './Book'
 import PropTypes from 'prop-types';
+import { observer } from 'mobx-react';
 
 class Bookshelf extends Component {
   static propTypes = {
-    books: PropTypes.array.isRequired,
     shelf: PropTypes.string.isRequired,
-    onUpdate: PropTypes.func.isRequired
+    books: PropTypes.array.isRequired,
+    store: PropTypes.object.isRequired,
   }
 
   getTitle() {
@@ -33,7 +34,7 @@ class Bookshelf extends Component {
                 <Book
                   key={ book.id }
                   book={ book }
-                  onUpdate={this.props.onUpdate}
+                  store={ this.props.store }
                 />
               ))
             }
@@ -44,4 +45,4 @@ class Bookshelf extends Component {
   }
 }
 
-export default Bookshelf;
+export default observer(Bookshelf);
