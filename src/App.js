@@ -2,7 +2,10 @@ import React from 'react'
 import './App.css'
 import { Route } from 'react-router-dom'
 import SearchBooks from './SearchBooks'
-import ListBooks from './ListBooks'
+import BooksScreen from './BooksScreen';
+import BookStore from './BookStore';
+
+const bookStore = new BookStore();
 
 class BooksApp extends React.Component {
   state = { }
@@ -11,11 +14,10 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         <Route path='/search' render={() => (
-          <SearchBooks />
+          <SearchBooks store={bookStore} />
         )} />
-
         <Route exact path='/' render={() => (
-          <ListBooks />
+          <BooksScreen store={bookStore} />
         )} />
       </div>
     )

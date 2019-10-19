@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 class Book extends Component {
   static propTypes = {
     book: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func.isRequired
+    store: PropTypes.object.isRequired,
   }
 
   authorsName() {
@@ -36,7 +36,7 @@ class Book extends Component {
             <div className="book-shelf-changer">
               <BookshelfChanger
                 book={this.props.book}
-                onUpdate={this.props.onUpdate}
+                store={this.props.store}
               />
             </div>
           </div>
