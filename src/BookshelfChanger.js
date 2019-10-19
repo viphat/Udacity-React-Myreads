@@ -22,7 +22,7 @@ class BookshelfChanger extends Component {
   }
 
   updateBookShelf(book, shelf) {
-    this.props.store.updateBook(book, shelf)
+    this.props.store.updateBookShelf(book, shelf)
   }
 
   render() {

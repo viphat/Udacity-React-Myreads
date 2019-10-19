@@ -1,7 +1,7 @@
 import React from 'react'
 import './App.css'
 import { Route } from 'react-router-dom'
-// import SearchBooks from './SearchBooks'
+import SearchBooks from './SearchBooks'
 import BooksScreen from './BooksScreen';
 import BookStore from './BookStore';
 
@@ -13,10 +13,9 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {/*
         <Route path='/search' render={() => (
-          <SearchBooks />
-        )} />*/}
+          <SearchBooks store={bookStore} />
+        )} />
         <Route exact path='/' render={() => (
           <BooksScreen store={bookStore} />
         )} />

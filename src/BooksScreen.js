@@ -2,9 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Bookshelf from './Bookshelf';
 import LoadingSpinner from './LoadingSpinner';
+import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 
 class BooksScreen extends Component {
+  static propTypes = {
+    store: PropTypes.object.isRequired,
+  }
+
   componentDidMount() {
     this.props.store.getBooks();
   }
